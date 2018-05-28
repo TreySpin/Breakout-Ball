@@ -121,6 +121,8 @@ public class Gameplay extends JPanel implements KeyListener, ActionListener, Mou
 	public void drawBackground(Graphics g) {
 		g.setColor(Color.black);
 		g.fillRect(1, 1, 692, 592);
+		g.setColor(Color.darkGray);
+		g.fillRect(1, 250, 700, 270);
 	}
 	
 	public void drawBorders(Graphics g) {
@@ -292,15 +294,24 @@ public class Gameplay extends JPanel implements KeyListener, ActionListener, Mou
 	public void setBall(MouseEvent e) {
 		if(!play)
 		{
-			ballposX = e.getX();
-			if(e.getY() < 500 && e.getY() > 250) {
-				ballposY = e.getY();
+			if(e.getX() < 3) {
+				ballposX = 3;
 			}
-			else if(e.getY() < 250) {
-				ballposY = 250;
+			else if(e.getX() > 670) {
+				ballposX = 670;
 			}
 			else {
+				ballposX = e.getX();
+			}
+			
+			if(e.getY() < 250) {
+				ballposY = 250;
+			}
+			else if(e.getY() > 500) {
 				ballposY = 500;
+			}
+			else {
+				ballposY = e.getY();
 			}
 		}
 	}
@@ -311,15 +322,24 @@ public class Gameplay extends JPanel implements KeyListener, ActionListener, Mou
 	@Override
 	public void mouseMoved(MouseEvent e) {
 		if(!play) {
-			mouseX = e.getX();
-			if(e.getY() < 500 && e.getY() > 250) {
-				mouseY = e.getY();
+			if(e.getX() < 3) {
+				mouseX = 3;
 			}
-			else if(e.getY() < 250) {
-				mouseY = 250;
+			else if(e.getX() > 670) {
+				mouseX = 670;
 			}
 			else {
+				mouseX = e.getX();
+			}
+			
+			if(e.getY() < 250) {
+				mouseY = 250;
+			}
+			else if( e.getY() > 500) {
 				mouseY = 500;
+			}
+			else {
+				mouseY = e.getY();
 			}
 		}
 		
