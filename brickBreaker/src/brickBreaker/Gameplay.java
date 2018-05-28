@@ -8,13 +8,15 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 import java.awt.Graphics2D;
 
 import javax.swing.JPanel;
 import javax.swing.Timer;
 
 @SuppressWarnings("serial")
-public class Gameplay extends JPanel implements KeyListener, ActionListener {
+public class Gameplay extends JPanel implements KeyListener, ActionListener, MouseListener {
 	private boolean play = false;
 	private int score = 0;
 	private int totalBricks = 21;
@@ -24,8 +26,8 @@ public class Gameplay extends JPanel implements KeyListener, ActionListener {
 	
 	private int playerX = 310;
 	
-	private int ballposX = 120;
-	private int ballposY = 350;
+	private int ballposX = (int)(Math.random() * 600);
+	private int ballposY = (int)(Math.random() * 200 + 300);
 	private int ballXdir = -1;
 	private int ballYdir = -2;
 	
@@ -38,6 +40,7 @@ public class Gameplay extends JPanel implements KeyListener, ActionListener {
 		setFocusTraversalKeysEnabled(false);
 		timer = new Timer(delay, this);
 		timer.start();
+		addMouseListener(this);
 	}
 	
 	public void drawBackground(Graphics g) {
@@ -178,7 +181,6 @@ public class Gameplay extends JPanel implements KeyListener, ActionListener {
 
 	@Override
 	public void keyPressed(KeyEvent e) {
-		// TODO Auto-generated method stub
 		if(e.getKeyCode() == KeyEvent.VK_RIGHT) {
 			moveRight();
 		}
@@ -189,12 +191,20 @@ public class Gameplay extends JPanel implements KeyListener, ActionListener {
 			restart();
 		}
 	}
-
+	
+	public void setBall(MouseEvent e) {
+		if(!play)
+		{
+			ballposX = e.getX();
+			ballposY = e.getY();
+		}
+	}
+	
 	public void restart() {
 		if(!play) {
-			play = true;
-			ballposX = 120;
-			ballposY = 350;
+			play = false;
+			ballposX = (int)Math.random() * 600;
+			ballposY = (int)Math.random() * 200 + 300;
 			ballXdir = -1;
 			ballYdir = -2;
 			score = 0;
@@ -229,4 +239,20 @@ public class Gameplay extends JPanel implements KeyListener, ActionListener {
 	@Override
 	public void keyTyped(KeyEvent arg0) {}
 	
+	@Override
+	public void mouseClicked(MouseEvent e) {
+		setBall(e);
+	}
+	
+	@Override
+	public void mouseEntered(MouseEvent e) {}
+	
+	@Override
+	public void mouseExited(MouseEvent e) {}
+	
+	@Override
+	public void mousePressed(MouseEvent e) {}
+	
+	@Override
+	public void mouseReleased(MouseEvent e) {}
 }
