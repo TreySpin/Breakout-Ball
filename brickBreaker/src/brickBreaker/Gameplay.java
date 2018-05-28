@@ -10,19 +10,20 @@ import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.awt.event.MouseMotionListener;
 import java.awt.Graphics2D;
 
 import javax.swing.JPanel;
 import javax.swing.Timer;
 
 @SuppressWarnings("serial")
-public class Gameplay extends JPanel implements KeyListener, ActionListener, MouseListener {
+public class Gameplay extends JPanel implements KeyListener, ActionListener, MouseListener, MouseMotionListener {
 	private boolean play = false;
 	private int score = 0;
 	private int totalBricks = 21;
 	
 	private Timer timer;
-	private int delay = 8;
+	private int delay = 5;
 	
 	private int playerX = 310;
 	
@@ -30,6 +31,9 @@ public class Gameplay extends JPanel implements KeyListener, ActionListener, Mou
 	private int ballposY = (int)(Math.random() * 200 + 300);
 	private int ballXdir = -1;
 	private int ballYdir = -2;
+	
+	private int mouseX = 0;
+	private int mouseY = 0;
 	
 	private MapGenerator map;
 	
@@ -41,6 +45,7 @@ public class Gameplay extends JPanel implements KeyListener, ActionListener, Mou
 		timer = new Timer(delay, this);
 		timer.start();
 		addMouseListener(this);
+		addMouseMotionListener(this);
 	}
 	
 	@Override
@@ -125,16 +130,21 @@ public class Gameplay extends JPanel implements KeyListener, ActionListener, Mou
 		g.fillRect(691, 0, 3, 592);
 	}
 	
-	public void drawPaddleAndBall(Graphics g) {
-		//Paddle
+	public void drawPaddle(Graphics g) {
 		g.setColor(Color.green);
 		g.fillRect(playerX, 550, 100, 8);
-		
-		//Ball
+	}
+
+	public void drawBall(Graphics g) {
 		g.setColor(Color.yellow);
 		g.fillOval(ballposX, ballposY, 20, 20);
 	}
-
+	
+	public void drawTBall(Graphics g) {
+		g.setColor(new Color(255, 0, 0, 125));
+		g.fillOval(mouseX, mouseY, 20, 20);
+	}
+	
 	public void drawPause(Graphics g) {
 		g.setColor(Color.red);
 		g.setFont(new Font("serif", Font.BOLD, 25));
@@ -229,7 +239,12 @@ public class Gameplay extends JPanel implements KeyListener, ActionListener, Mou
 		drawBackground(g);
 		drawBorders(g);
 		drawScore(g);
-		drawPaddleAndBall(g);
+		drawPaddle(g);
+		drawBall(g);
+		
+		if(!play) {
+			drawTBall(g);
+		}
 		
 		map.draw((Graphics2D)g);
 		
@@ -278,7 +293,35 @@ public class Gameplay extends JPanel implements KeyListener, ActionListener, Mou
 		if(!play)
 		{
 			ballposX = e.getX();
-			ballposY = e.getY();
+			if(e.getY() < 500 && e.getY() > 250) {
+				ballposY = e.getY();
+			}
+			else if(e.getY() < 250) {
+				ballposY = 250;
+			}
+			else {
+				ballposY = 500;
+			}
 		}
+	}
+
+	@Override
+	public void mouseDragged(MouseEvent arg0) {}
+
+	@Override
+	public void mouseMoved(MouseEvent e) {
+		if(!play) {
+			mouseX = e.getX();
+			if(e.getY() < 500 && e.getY() > 250) {
+				mouseY = e.getY();
+			}
+			else if(e.getY() < 250) {
+				mouseY = 250;
+			}
+			else {
+				mouseY = 500;
+			}
+		}
+		
 	}
 }
