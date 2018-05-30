@@ -121,8 +121,11 @@ public class Gameplay extends JPanel implements KeyListener, ActionListener, Mou
 	public void drawBackground(Graphics g) {
 		g.setColor(Color.black);
 		g.fillRect(1, 1, 692, 592);
-		g.setColor(Color.darkGray);
-		g.fillRect(1, 250, 700, 270);
+		
+		if(!play) {
+			g.setColor(Color.darkGray);
+			g.fillRect(1, 250, 700, 270);
+		}
 	}
 	
 	public void drawBorders(Graphics g) {
@@ -163,6 +166,7 @@ public class Gameplay extends JPanel implements KeyListener, ActionListener, Mou
 	
 	public void gameLose(Graphics g) {
 		play = false;
+		timer.stop();
 		ballXdir = 0;
 		ballYdir = 0;
 		g.setColor(Color.red);
@@ -278,9 +282,10 @@ public class Gameplay extends JPanel implements KeyListener, ActionListener, Mou
 	
 	public void restart() {
 		if(!play) {
+			timer.restart();
 			play = false;
-			ballposX = (int)Math.random() * 600;
-			ballposY = (int)Math.random() * 200 + 300;
+			ballposX = (int)(Math.random() * 600);
+			ballposY = (int)(Math.random() * 200 + 300);
 			ballXdir = -1;
 			ballYdir = -2;
 			score = 0;
